@@ -62,6 +62,24 @@ function App() {
     }
   };
 
+
+  const isInputEmpty = () => {
+    switch (currentStep) {
+      case 1:
+        return formData.name === "";
+      case 2:
+        return formData.city === "";
+      case 3:
+        return formData.phone === "";
+      case 4:
+        return formData.address === "";
+      case 5:
+        return formData.country === "";
+      default:
+        return false;
+    }
+  };
+
   return (
     // <>
     //   <button
@@ -125,7 +143,7 @@ function App() {
                           <p className="hidden md:block font-bold">
                             Your Name <br />
                             <span className="lg:text-sm text-xs font-light">
-                              First Middle Last
+                              First Middle & Last Name
                             </span>
                           </p>
                           <div className="flex items-center justify-between space-x-4">
@@ -1234,7 +1252,7 @@ function App() {
                       {currentStep > 1 && (
                         <button
                           onClick={handlePrevious}
-                          className="rounded-xl bg-blue-400 p-2 text-xs sm:text-sm md:text-base "
+                          className="rounded-xl bg-blue-400 p-2 text-xs sm:text-sm md:text-base cursor-pointer"
                         >
                           Previous Step
                         </button>
@@ -1242,13 +1260,21 @@ function App() {
                       {currentStep < 5 && (
                         <button
                           onClick={handleNext}
-                          className="rounded-xl bg-blue-500 p-2 text-xs sm:text-sm md:text-base float-right"
+                          className="rounded-xl bg-blue-500 p-2 text-xs sm:text-sm md:text-base float-right cursor-pointer"
+                          disabled={isInputEmpty()}
                         >
                           Next Step
                         </button>
                       )}
                       {currentStep === 5 && (
-                        <Link to="/results" className="float-right">
+                        <Link
+                          to="/results"
+                          className="float-right text-cyan-950 results"
+                          style={{
+                            pointerEvents: isInputEmpty() ? "none" : "auto",
+                            color: isInputEmpty() ? "#ff0000" : "rgb(18, 151, 68)",
+                          }}
+                        >
                           See Results
                         </Link>
                       )}
@@ -1261,27 +1287,31 @@ function App() {
               path="/results"
               element={
                 <>
-                <div className="w-full h-full ml-5 mt-3 space-y-8">
-                  <h2 className="font-bold text-xl">Your Information</h2>
-                  <p className="font-medium">
-                    Name : <span className="font-normal">{formData.name}</span>{" "}
-                  </p>
-                  <p className="font-medium">
-                    City : <span className="font-normal">{formData.city}</span>{" "}
-                  </p>
-                  <p className="font-medium">
-                    Phone : <span className="font-normal">{formData.phone}</span>{" "}
-                  </p>
-                  <p className="font-medium">
-                    Address :{" "}
-                    <span className="font-normal">{formData.address}</span>
-                  </p>
-                  <p className="font-medium">
-                    Country :{" "}
-                    <span className="font-normal">{selectedCountryLabel}</span>
-                  </p>
-                </div>
-                  
+                  <div className="w-full h-full ml-5 mt-3 space-y-8">
+                    <h2 className="font-bold text-xl">Your Information</h2>
+                    <p className="font-medium">
+                      Name :{" "}
+                      <span className="font-normal">{formData.name}</span>{" "}
+                    </p>
+                    <p className="font-medium">
+                      City :{" "}
+                      <span className="font-normal">{formData.city}</span>{" "}
+                    </p>
+                    <p className="font-medium">
+                      Phone :{" "}
+                      <span className="font-normal">{formData.phone}</span>{" "}
+                    </p>
+                    <p className="font-medium">
+                      Address :{" "}
+                      <span className="font-normal">{formData.address}</span>
+                    </p>
+                    <p className="font-medium">
+                      Country :{" "}
+                      <span className="font-normal">
+                        {selectedCountryLabel}
+                      </span>
+                    </p>
+                  </div>
                 </>
               }
             />
